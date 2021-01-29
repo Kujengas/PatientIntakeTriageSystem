@@ -20,11 +20,6 @@ import TextField from '@material-ui/core/TextField';
 import Grid from '@material-ui/core/Grid';
 
 
-
-/* {  <Button variant="outlined" color="primary" onClick={handleClickOpen}>
-             Open dialog
-   </Button>}*/
-
 const useStyles = makeStyles((theme) => ({
     root: {
         width: '100%',
@@ -50,9 +45,6 @@ const useStyles = makeStyles((theme) => ({
         color: theme.palette.grey[500],
     },
 }));
-
-
-
 
 
 const save = async () => {
@@ -109,13 +101,11 @@ const save = async () => {
     patient.Race = document.getElementById('txtRace').value || "";
     patient.SSN = document.getElementById('txtSSN').value || "";
     patient.SpokenLanguage = document.getElementById('txtSpokenLanguage').value || "";
-    patient.RespProv =/* document.getElementById('txtRespProv').value ||*/ "";
-    patient.Referredby =/* document.getElementById('txtReferredby').value ||*/ "";
-    patient.EmpStatus =/* document.getElementById('txtEmpStatus').value || */"";
-    patient.SensChart =/* document.getElementById('txtSensChart').value || */"";
 
 
-    const url = 'https://localhost:44382/api/Patient';
+    //TODO: Move all api calls to a common store
+        //reinvestigate redux as well as other alternatives
+        const url = 'https://localhost:44382/api/Patient';
 
 
     const response = await fetch(url, {
@@ -125,7 +115,7 @@ const save = async () => {
     });
 
     console.log(response);
- 
+
 }
 
 
@@ -204,11 +194,6 @@ function getStepContent(step) {
     );
 
 }
-
-
-
-
-
 
 export default function NewPatientStepperModal() {
     const classes = useStyles();
@@ -296,21 +281,17 @@ export default function NewPatientStepperModal() {
 
 
     return (
-
         <div>
-
             <ListItem button onClick={handleClickOpen} >
                 <ListItemIcon> <PersonAddIcon /></ListItemIcon>
                 <ListItemText primary="Add Patient" />
             </ListItem>
 
-
             <Dialog onClose={handleClose} aria-labelledby="customized-dialog-title" open={open}>
                 <DialogTitle id="customized-dialog-title" onClose={handleClose}>
-                   Patient Registry
+                    Patient Registry
         </DialogTitle>
                 <DialogContent dividers>
-
                     <div className={classes.root}>
                         <Stepper nonLinear activeStep={activeStep}>
                             {steps.map((label, index) => (
@@ -322,33 +303,20 @@ export default function NewPatientStepperModal() {
                             ))}
                         </Stepper>
                         <div>
-                            {allStepsCompleted() ? (
-                                <div>
-                                    <Typography className={classes.instructions}>
-                                        All steps completed - you&apos;re finished
-            </Typography>
-                                    <Button onClick={handleReset}>Reset</Button>
-                                </div>
-                            ) : (
-                                    <div>
-                                        <Typography className={classes.instructions}>{getStepContent(activeStep)}</Typography>
-                                        <div>
-                                            <Button disabled={activeStep === 0} onClick={handleBack} className={classes.button}>
-                                                Back</Button>
-                                            <Button disabled={activeStep === 1}
-                                                variant="contained"
-                                                color="primary"
-                                                onClick={handleNext}
-                                                className={classes.button}>
-                                                Next</Button>
+                            <Typography className={classes.instructions}>{getStepContent(activeStep)}</Typography>
+                            <div>
+                                <Button disabled={activeStep === 0} onClick={handleBack} className={classes.button}>
+                                    Back</Button>
+                                <Button disabled={activeStep === 1}
+                                    variant="contained"
+                                    color="primary"
+                                    onClick={handleNext}
+                                    className={classes.button}>
+                                    Next</Button>
 
-                                        </div>
-                                    </div>
-                                )}
+                            </div>
                         </div>
                     </div>
-
-
                 </DialogContent>
                 <DialogActions>
                     <Button autoFocus onClick={handleSave} color="Secondary">

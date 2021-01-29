@@ -5,14 +5,10 @@ import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableContainer from '@material-ui/core/TableContainer';
-import TableHead from '@material-ui/core/TableHead';
-import TablePagination from '@material-ui/core/TablePagination';
 import TableRow from '@material-ui/core/TableRow';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import TextField from '@material-ui/core/TextField';
-import PatientData from './ClinicalDataGrid';
 import Button from '@material-ui/core/Button';
-
 
 const useStyles = makeStyles({
     root: {
@@ -23,25 +19,19 @@ const useStyles = makeStyles({
     },
 });
 
-
-function ClinicalDataEntry(encounterid) {
+function ClinicalDataEntry({ encounterid }) {
 
     const [data, setData] = useState([]);
     const [loading, setLoading] = useState(true);
     const classes = useStyles();
     const [encounterId, setEncounterId] = useState(encounterid);
 
-
     useEffect(() => {
         fetchAttributeList();
     }, []);
 
     const handleSave = () => {
-
-
         saveEncounterAttributes();
-
-
     };
 
     const buildEncounter = () => {
@@ -53,11 +43,10 @@ function ClinicalDataEntry(encounterid) {
             console.log(a);
             var controlId = "txt" + data[a].AttributeCode;
 
-
             if (document.getElementById(controlId).value != "") {
                 attributeData.push(
                     {
-                        Id: 1,
+                        Id: encounterid,
                         Data: document.getElementById(controlId).value || "",
                         AttributeCode: data[a].AttributeCode
                     }
@@ -67,13 +56,13 @@ function ClinicalDataEntry(encounterid) {
         }
         console.log(attributeData);
         return attributeData;
-
-
     };
 
 
     const saveEncounterAttributes = async () => {
 
+        //TODO: Move all api calls to a common store
+        //reinvestigate redux as well as other alternatives
         const url = 'https://localhost:44382/api/Encounter/Attributes';
 
         const response = await fetch(url, {
@@ -83,17 +72,15 @@ function ClinicalDataEntry(encounterid) {
         });
 
         console.log(buildEncounter());
-
-
         //handleClose();
         console.log(response);
     }
 
 
-
-
     const fetchAttributeList = async () => {
 
+        //TODO: Move all api calls to a common store
+        //reinvestigate redux as well as other alternatives
         const url = 'https://localhost:44382/api/Encounter/AttributeFields/';
 
         const response = await fetch(url);
@@ -115,7 +102,6 @@ function ClinicalDataEntry(encounterid) {
 
 
             <Paper className={classes.root}>
-                <h1>Clinical Data Entry</h1>
                 <TableContainer className={classes.container}>
                     <Table stickyHeader aria-label="sticky table">
 
@@ -133,8 +119,7 @@ function ClinicalDataEntry(encounterid) {
                 </TableContainer>
                 <Button onClick={handleSave}>Save</Button>
             </Paper>
-
-        }<PatientData />
+        }
 
     </div >);
 }

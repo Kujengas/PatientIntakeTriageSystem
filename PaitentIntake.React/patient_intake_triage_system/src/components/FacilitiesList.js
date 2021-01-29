@@ -24,8 +24,6 @@ const useStyles = makeStyles({
     },
 });
 
-
-
 function FacilitiesList() {
 
     const [facilities, setFacilities] = useState([]);
@@ -33,6 +31,8 @@ function FacilitiesList() {
 
     const fetchFacilities = async () => {
 
+        //TODO: Move all api calls to a common store
+        //reinvestigate redux as well as other alternatives
         const url = 'https://localhost:44382/api/location/';
         const response = await fetch(url);
 

@@ -67,6 +67,8 @@ function PatientContactList() {
 
 
     const fetchPatientList = async () => {
+        //TODO: Move all api calls to a common store
+        //reinvestigate redux as well as other alternatives
         const url = 'https://localhost:44382/api/Patient';
 
         const response = await fetch(url);

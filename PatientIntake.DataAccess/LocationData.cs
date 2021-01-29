@@ -127,6 +127,10 @@ namespace PatientIntake.DataAccess
                     }).ToList();
         }
 
+
+
+
+       // flattemed datatable for encounters grid
         public static List<OpenEncountersResponse> GetOpenEncountersByLocationId(int id)
         {
             var parameters = new List<SqlParameter>();
@@ -159,7 +163,7 @@ namespace PatientIntake.DataAccess
                         Patients_MiddleName = row["Patients_MiddleName"].ToString(),
                         Patients_Suffix = row["Patients_Suffix"].ToString(),
                         Patients_Prefix = row["Patients_Prefix"].ToString(),
-                        Patients_DateOfBirth = row["Patients_DateOfBirth"] != DBNull.Value ? Convert.ToDateTime(row["Patients_DateOfBirth"]) : (DateTime?)null,
+                        Patients_DateOfBirth = row["Patients_DateOfBirth"] != DBNull.Value ? Convert.ToDateTime(row["Patients_DateOfBirth"]).Date : (DateTime?)null,
                         Patients_Phone = row["Patients_Phone"].ToString(),
                         Patients_Email = row["Patients_Email"].ToString(),
                         Patients_AddressLine1 = row["Patients_AddressLine1"].ToString(),
@@ -189,7 +193,7 @@ namespace PatientIntake.DataAccess
                         Providers_MiddleName = row["Providers_MiddleName"].ToString(),
                         Providers_Suffix = row["Providers_Suffix"].ToString(),
                         Providers_Prefix = row["Providers_Prefix"].ToString(),
-                        Providers_DateOfBirth = row["Providers_DateOfBirth"] != DBNull.Value ? Convert.ToDateTime(row["Providers_DateOfBirth"]) : (DateTime?)null,
+                        Providers_DateOfBirth = row["Providers_DateOfBirth"] != DBNull.Value ? Convert.ToDateTime(row["Providers_DateOfBirth"]).Date : (DateTime?)null,
                         Providers_Phone = row["Providers_Phone"].ToString(),
                         Providers_Email = row["Providers_Email"].ToString(),
                         Providers_AddressLine1 = row["Providers_AddressLine1"].ToString(),

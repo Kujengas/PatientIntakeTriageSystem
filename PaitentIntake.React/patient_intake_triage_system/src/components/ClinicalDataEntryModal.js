@@ -8,21 +8,7 @@ import MuiDialogActions from '@material-ui/core/DialogActions';
 import IconButton from '@material-ui/core/IconButton';
 import CloseIcon from '@material-ui/icons/Close';
 import Typography from '@material-ui/core/Typography';
-
-import TextField from '@material-ui/core/TextField';
-import Paper from '@material-ui/core/Paper';
-import Grid from '@material-ui/core/Grid';
-import CircularProgress from '@material-ui/core/CircularProgress';
-import PatientSearch from './PatientSearch';
-import ProviderSearch from './ProviderSearch';
-import LocationSearch from './LocationSearch';
-import ScheduleIcon from '@material-ui/icons/Schedule';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
-import ListItemText from '@material-ui/core/ListItemText';
 import ClinicalDataEntry from './ClinicalDataEntry';
-
-
 
 const styles = (theme) => ({
     root: {
@@ -39,31 +25,7 @@ const styles = (theme) => ({
     paper: {
         marginBlock: 30
     }
-
-       
-   
 });
-
-
-/*
- * 
- * 
- *   
- * 
-    Id:
-    PatientId:
-    LocationId:
-    RoomId:
-    ProviderId:
-    CreationTime:
-    ScheduledTime:
-    ArrivalTime:
-    CheckInTime:
-    AssignmentTime:
-    CheckOutTime:
-    CancelTime:
-    Comments:
-   */
 
 
 const DialogTitle = withStyles(styles)((props) => {
@@ -93,61 +55,43 @@ const DialogActions = withStyles((theme) => ({
     },
 }))(MuiDialogActions);
 
-export default function CreateEncounterModal({ locationId='' }) {
-    console.log(locationId);
+export default function ClinicalDataEntryModal({ encounterid }) {
+    console.log(encounterid);
     const [open, setOpen] = useState(false);
-    const [patient, setPatient] = useState({});
-    const [provider, setProvider] = useState({});
-    const [comment, setComment] = useState("");
-    const [scheduledDate, setScheduledDate] = useState();
-    const [encounter, setEncounter] = useState({});
-    const [location, setLocation] = useState({});
+
+   // const [encounterId, setEncounterId] = useState(encounterid);
     const [isSaveDisabled, setIsSaveDisabled] = useState(true);
 
     const handleClickOpen = () => {
+
+        console.log(encounterid);
         setOpen(true);
     };
     const handleClose = () => {
 
-        setPatient({});
-        setProvider({});
-        setComment("");
-        setScheduledDate(null)
         setOpen(false);
     };
 
-  
-   
     const classes = styles;
-
-    useEffect(() => {
-
-    }, []);
-
 
     return (
         <div>
-         
-
-            <Button variant="outlined" color="primary" onClick={handleClickOpen}>
-                Enter Patient Details
+            <Button variant="outlined" color="secondary" onClick={handleClickOpen} >
+                Enter Clinical Data 
              </Button>
-
 
             <Dialog onClose={handleClose} aria-labelledby="customized-dialog-title" disableBackdropClick open={open}>
                 <DialogTitle id="customized-dialog-title" onClose={handleClose}>
-                    Create Encounter
+                    Clinical Data Entry
         </DialogTitle>
                 <DialogContent dividers>
-
-                    <ClinicalDataEntry EncounterId={encounter.Id} />
-
+                    <ClinicalDataEntry encounterid={encounterid}  />
                 </DialogContent>
-                <DialogActions>
-                    <Button autoFocus onClick={saveEncounter} disabled={isSaveDisabled} color="Secondary" >
-                        Save Encounter Data
-          </Button>
-                </DialogActions>
+                {/*   <DialogActions>
+                    <Button autoFocus onClick="" disabled={isSaveDisabled} color="Secondary" >
+                     Save Clinical Data
+                     </Button>
+                </DialogActions>*/}
             </Dialog>
         </div>
     );

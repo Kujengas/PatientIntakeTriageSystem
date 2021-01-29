@@ -11,8 +11,8 @@ import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TablePagination from '@material-ui/core/TablePagination';
 import TableRow from '@material-ui/core/TableRow';
-
-
+import ClinicalDataEntryModal from './ClinicalDataEntryModal';
+import ClinicalDataViewModal from './ClinicalDataViewModal';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -21,7 +21,6 @@ const useStyles = makeStyles((theme) => ({
         paddingTop: 5,
     }
 }));
-
 
 function FacilityDashboard({ match }) {
     const classes = useStyles();
@@ -33,6 +32,8 @@ function FacilityDashboard({ match }) {
 
     const fetchFacilityDashboard = async () => {
 
+        //TODO: Move all api calls to a common store
+        //reinvestigate redux as well as other alternatives
         const url = `https://localhost:44382/api/location/${match.params.id}`;
         const response = await fetch(url);
 
@@ -105,17 +106,24 @@ function FacilityDashboard({ match }) {
                                 <TableCell>Notes</TableCell></TableRow>
 
                             {data.OpenEncounters.map(encounter =>
-                                <TableRow>
+                              <>  <TableRow>
                                     <TableCell>{encounter.Patients_FirstName} {encounter.Patients_LastName}</TableCell>
                                     <TableCell>{encounter.Patients_DateOfBirth}</TableCell>
                                     <TableCell>{encounter.Patients_Gender}</TableCell>
                                     <TableCell>{encounter.Patients_Phone}</TableCell>
                                     <TableCell>{encounter.Patients_Email}</TableCell>
                                     <TableCell>{encounter.Encounter_Comments}</TableCell> <TableCell>
-                                    <Button variant="outlined" color="primary" onClick={handleClickOpen}>
-                                        Enter Patient Details
-                                    </Button></TableCell>
+                                    </TableCell>
                                 </TableRow>
+                                <TableRow>
+                                        <TableCell><ClinicalDataViewModal encounterid={encounter.Encounter_Id} /></TableCell>
+                                        <TableCell><ClinicalDataEntryModal encounterid={encounter.Encounter_Id} /></TableCell>
+                                    <TableCell></TableCell>
+                                    <TableCell></TableCell>
+                                    <TableCell></TableCell>
+                                    <TableCell></TableCell> 
+                                </TableRow>
+                                    </>
                             )}
                         </Table>
                     </Paper>

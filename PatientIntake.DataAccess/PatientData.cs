@@ -149,7 +149,7 @@ namespace PatientIntake.DataAccess
                         MiddleName = row["MiddleName"].ToString(),
                         Suffix = row["Suffix"].ToString(),
                         Prefix = row["Prefix"].ToString(),
-                        DateOfBirth = Convert.ToDateTime(row["DateOfBirth"]),
+                        DateOfBirth = Convert.ToDateTime(row["DateOfBirth"]).Date,
                         Phone = row["Phone"].ToString(),
                         Email = row["Email"].ToString(),
                         AddressLine1 = row["AddressLine1"].ToString(),

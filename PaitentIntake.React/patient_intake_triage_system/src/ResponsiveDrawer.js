@@ -6,12 +6,10 @@ import Divider from '@material-ui/core/Divider';
 import Drawer from '@material-ui/core/Drawer';
 import Hidden from '@material-ui/core/Hidden';
 import IconButton from '@material-ui/core/IconButton';
-import InboxIcon from '@material-ui/icons/MoveToInbox';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
-import MailIcon from '@material-ui/icons/Mail';
 import MenuIcon from '@material-ui/icons/Menu';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
@@ -26,15 +24,15 @@ import InfoIcon from '@material-ui/icons/Info';
 import About from './components/About';
 import FacilitiesList from './components/FacilitiesList';
 import FacilityDashboard from './components/FacilityDashboard';
-import NewPatientForm from './components/NewPatientForm'
 import Home from './components/Home';
 import PatientContactList from './components/PatientContactList';
 import ProviderList from './components/ProviderList';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
-import CreateEncounterForm from './components/CreateEncounterForm';
 import ScheduleIcon from '@material-ui/icons/Schedule';
 import NewPatientStepperModal from './components/NewPatientStepperModal';
 import CreateEncounterModal from './components/CreateEncounterModal';
+
+
 
 const drawerWidth = 240;
 const toolbarHeight = 50;
@@ -72,7 +70,9 @@ const useStyles = makeStyles((theme) => ({
         padding: theme.spacing(3),
     },
     image: {
-        flexGrow: 1,
+        width: drawerWidth,
+        height: undefined,
+        aspectRatio: 1,
     }
 
 
@@ -160,7 +160,9 @@ function ResponsiveDrawer(props) {
     const drawer = (
         <div>
             <div className={classes.toolbar} />
-             <Divider />
+
+            <img src={process.env.PUBLIC_URL + '/swmlogo.png'} className={classes.image}/>;
+            <Divider />
 
 
             <IconButton edge="start" className={classes.menuButton}  aria-label="menu">
@@ -243,8 +245,6 @@ function ResponsiveDrawer(props) {
                         <Route path="/about" component={About} />
                         <Route path="/facilities" component={FacilitiesList} />
                         <Route path="/dashboard/:id" component={FacilityDashboard} />
-                        <Route path="/newpatient/" component={NewPatientForm} />
-                        <Route path="/createencounter/" component={CreateEncounterForm} />
                         <Route path="/patientcontactlist/" component={PatientContactList} />
                         <Route path="/providerlist/" component={ProviderList} />
                      

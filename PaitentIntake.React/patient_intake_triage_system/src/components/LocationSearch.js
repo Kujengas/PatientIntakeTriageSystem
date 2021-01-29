@@ -21,6 +21,8 @@ export default function LocationSearch({ value, onChange, id, data = [], isRequi
 
     const fetchLocationList = async () => {
 
+        //TODO: Move all api calls to a common store
+        //reinvestigate redux as well as other alternatives
         const url = 'https://localhost:44382/api/Location';
 
         const response = await fetch(url);

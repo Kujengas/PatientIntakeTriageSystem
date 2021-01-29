@@ -20,12 +20,13 @@ const useStyles = makeStyles({
 });
 
 
-function PatientData() {
+function ClinicalData({ encounterid }) {
 
     const [data, setData] = useState([]);
     const [loading, setLoading] = useState(true);
     const classes = useStyles();
-
+    const [encounterId, setEncounterId] = useState(encounterid);
+    
 
     useEffect(() => {
         fetchProviderList();
@@ -33,7 +34,9 @@ function PatientData() {
 
 
     const fetchProviderList = async () => {
-        const url = 'https://localhost:44382/api/Encounter/Attributes/1';
+        //TODO: Move all api calls to a common store
+        //reinvestigate redux as well as other alternatives
+        const url = `https://localhost:44382/api/Encounter/Attributes/${encounterId}`;
 
         const response = await fetch(url);
 
@@ -52,20 +55,9 @@ function PatientData() {
     return (<div>
 
         { loading ? <CircularProgress /> :
-
-
-
             <Paper className={classes.root}>
-                <h1>Patient Data</h1>
                 <TableContainer className={classes.container}>
                     <Table stickyHeader aria-label="sticky table">
-                        <TableHead>
-                            <TableRow>
-                                <TableCell>Attribute</TableCell>
-                                <TableCell>Value</TableCell>
-                            </TableRow>
-                        </TableHead>
-
                         <TableBody>
                             {
                                 data.map(patientData =>
@@ -79,10 +71,9 @@ function PatientData() {
                     </Table>
                 </TableContainer>
             </Paper>
-
         }
 
     </div >);
 }
 
-export default PatientData;
+export default ClinicalData;

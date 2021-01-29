@@ -22,9 +22,13 @@ const useStyles = makeStyles((theme) => ({
 
 
 
+
+
+
+//old jquery based example for reference of identity calls
+
+
 /*
- 
- 
  var data = {
             Email: email,
             UserName: username,
@@ -43,8 +47,6 @@ const useStyles = makeStyles((theme) => ({
             $("#LoginPanel").fadeIn();
             showSuccess("New User Account Created!");
         }).fail(showError);
-
-
 
          function login(username, password) {
         // var params = "grant_type=password&username=" + username + "&password=" + password;
@@ -87,6 +89,8 @@ function Home() {
 
 
         /*
+        //TODO: Move all api calls to a common store
+        //reinvestigate redux as well as other alternatives
         const url = 'https://localhost:44382/api/Account/Register';
             var data = {
             "Email": "rico.ross2@gmailcom",
@@ -94,7 +98,9 @@ function Home() {
             "ConfirmPassword":"ddfsgsrecxRCVC@df2343"
         };
 
-  const url = 'https://localhost:44382/Token';
+  //TODO: Move all api calls to a common store
+        //reinvestigate redux as well as other alternatives
+        const url = 'https://localhost:44382/Token';
 
         var data = {
             "Username": "rico.ross@gmailcom",
@@ -109,6 +115,8 @@ function Home() {
         })
         */
 
+        //TODO: Move all api calls to a common store
+        //reinvestigate redux as well as other alternatives
         const url = 'http://patientintake.shuthuluwhiskeyroses.com/Token';
 
         data = {
