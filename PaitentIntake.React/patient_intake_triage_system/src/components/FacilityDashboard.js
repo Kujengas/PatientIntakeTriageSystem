@@ -13,6 +13,7 @@ import TablePagination from '@material-ui/core/TablePagination';
 import TableRow from '@material-ui/core/TableRow';
 import ClinicalDataEntryModal from './ClinicalDataEntryModal';
 import ClinicalDataViewModal from './ClinicalDataViewModal';
+import moment from 'moment';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -34,7 +35,7 @@ function FacilityDashboard({ match }) {
 
         //TODO: Move all api calls to a common store
         //reinvestigate redux as well as other alternatives
-        const url = `https://localhost:44382/api/location/${match.params.id}`;
+        const url = `http://patientintake.shuthuluwhiskeyroses.com/api/location/${match.params.id}`;
         const response = await fetch(url);
 
         const facilityDashboard = await response.json();
@@ -108,7 +109,7 @@ function FacilityDashboard({ match }) {
                             {data.OpenEncounters.map(encounter =>
                               <>  <TableRow>
                                     <TableCell>{encounter.Patients_FirstName} {encounter.Patients_LastName}</TableCell>
-                                    <TableCell>{encounter.Patients_DateOfBirth}</TableCell>
+                                    <TableCell>{moment(new Date(encounter.Patients_DateOfBirth)).format('l')}</TableCell>
                                     <TableCell>{encounter.Patients_Gender}</TableCell>
                                     <TableCell>{encounter.Patients_Phone}</TableCell>
                                     <TableCell>{encounter.Patients_Email}</TableCell>

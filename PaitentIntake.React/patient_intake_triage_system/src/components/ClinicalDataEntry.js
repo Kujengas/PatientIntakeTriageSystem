@@ -63,7 +63,7 @@ function ClinicalDataEntry({ encounterid }) {
 
         //TODO: Move all api calls to a common store
         //reinvestigate redux as well as other alternatives
-        const url = 'https://localhost:44382/api/Encounter/Attributes';
+        const url = 'http://patientintake.shuthuluwhiskeyroses.com/api/Encounter/Attributes';
 
         const response = await fetch(url, {
             method: 'POST',
@@ -81,7 +81,7 @@ function ClinicalDataEntry({ encounterid }) {
 
         //TODO: Move all api calls to a common store
         //reinvestigate redux as well as other alternatives
-        const url = 'https://localhost:44382/api/Encounter/AttributeFields/';
+        const url = 'http://patientintake.shuthuluwhiskeyroses.com/api/Encounter/AttributeFields/';
 
         const response = await fetch(url);
 

@@ -91,7 +91,7 @@ function Home() {
         /*
         //TODO: Move all api calls to a common store
         //reinvestigate redux as well as other alternatives
-        const url = 'https://localhost:44382/api/Account/Register';
+        const url = 'http://patientintake.shuthuluwhiskeyroses.com/api/Account/Register';
             var data = {
             "Email": "rico.ross2@gmailcom",
             "Password": "ddfsgsrecxRCVC@df2343",
@@ -100,7 +100,7 @@ function Home() {
 
   //TODO: Move all api calls to a common store
         //reinvestigate redux as well as other alternatives
-        const url = 'https://localhost:44382/Token';
+        const url = 'http://patientintake.shuthuluwhiskeyroses.com/Token';
 
         var data = {
             "Username": "rico.ross@gmailcom",

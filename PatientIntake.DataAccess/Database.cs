@@ -14,10 +14,10 @@ namespace PatientIntake.DataAccess
         {
             SqlConnectionStringBuilder builder = new SqlConnectionStringBuilder
             {
-                DataSource = "sql5065.site4now.net",
-                UserID = "DB_A4BBBD_SWUPDB_admin",
-                Password = "swupdb1234",
-                InitialCatalog = "DB_A4BBBD_SWUPDB"
+                DataSource = "",
+                UserID = "",
+                Password ="", 
+                InitialCatalog = ""
             };
 
             return builder.ConnectionString;
@@ -26,14 +26,22 @@ namespace PatientIntake.DataAccess
         public static DataTable GetDataTable(string commandName, List<SqlParameter> parameters)
         {
             DataTable dt = new DataTable();
-            using (var conn = new SqlConnection(Database.GetConnectionString()))
-            using (var cmd = new SqlCommand(commandName, conn) { CommandType = CommandType.StoredProcedure })
-            {
-                conn.Open();
 
-                cmd.Parameters.AddRange(parameters.ToArray());
-                SqlDataAdapter da = new SqlDataAdapter(cmd);
-                da.Fill(dt);
+            try
+            {
+                using (var conn = new SqlConnection(Database.GetConnectionString()))
+                using (var cmd = new SqlCommand(commandName, conn) { CommandType = CommandType.StoredProcedure })
+                {
+                    conn.Open();
+
+                    cmd.Parameters.AddRange(parameters.ToArray());
+                    SqlDataAdapter da = new SqlDataAdapter(cmd);
+                    da.Fill(dt);
+                }
+            }
+            catch (SqlException ex) 
+            { 
+            
             }
 
             return dt;
@@ -41,14 +49,20 @@ namespace PatientIntake.DataAccess
 
         public static int ExecuteCommand(string commandName, List<SqlParameter> parameters)
         {
-            int result;
-
-            using (var conn = new SqlConnection(Database.GetConnectionString()))
-            using (var cmd = new SqlCommand(commandName, conn) { CommandType = CommandType.StoredProcedure })
+            int result = -1;
+            try
             {
-                conn.Open();
-                cmd.Parameters.AddRange(parameters.ToArray());
-                result = cmd.ExecuteNonQuery();
+                using (var conn = new SqlConnection(Database.GetConnectionString()))
+                using (var cmd = new SqlCommand(commandName, conn) { CommandType = CommandType.StoredProcedure })
+                {
+                    conn.Open();
+                    cmd.Parameters.AddRange(parameters.ToArray());
+                    result = cmd.ExecuteNonQuery();
+                }
+            }
+            catch (SqlException ex)
+            {
+
             }
             return result;
         }

@@ -33,7 +33,7 @@ function FacilitiesList() {
 
         //TODO: Move all api calls to a common store
         //reinvestigate redux as well as other alternatives
-        const url = 'https://localhost:44382/api/location/';
+        const url = 'http://patientintake.shuthuluwhiskeyroses.com/api/location/';
         const response = await fetch(url);
 
         const facilities = await response.json();

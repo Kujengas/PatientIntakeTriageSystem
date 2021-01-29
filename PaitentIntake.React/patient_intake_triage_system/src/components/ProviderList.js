@@ -9,6 +9,7 @@ import TableHead from '@material-ui/core/TableHead';
 import TablePagination from '@material-ui/core/TablePagination';
 import TableRow from '@material-ui/core/TableRow';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import moment from 'moment';
 
 const useStyles = makeStyles({
     root: {
@@ -35,7 +36,7 @@ const useStyles = makeStyles({
         const fetchProviderList = async () => {
             //TODO: Move all api calls to a common store
         //reinvestigate redux as well as other alternatives
-        const url = 'https://localhost:44382/api/Provider';
+        const url = 'http://patientintake.shuthuluwhiskeyroses.com/api/Provider';
 
             const response = await fetch(url);
 
@@ -82,7 +83,7 @@ const useStyles = makeStyles({
                                     data.map(provider =>
                                         <TableRow>
                                             <TableCell>{provider.Prefix}{provider.FirstName} {provider.LastName}{provider.Suffix}</TableCell>
-                                            <TableCell>{provider.DateOfBirth}</TableCell>             
+                                            <TableCell>{moment(new Date(provider.DateOfBirth)).format('l')}</TableCell>             
                                             <TableCell>{provider.Phone}</TableCell>
                                             <TableCell>{provider.OfficePhone}</TableCell>
                                             <TableCell>{provider.Email}</TableCell>

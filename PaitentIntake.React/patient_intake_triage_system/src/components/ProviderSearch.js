@@ -23,7 +23,7 @@ export default function PatientSearch({ value, onChange , id, data  = [] }) {
 
         //TODO: Move all api calls to a common store
         //reinvestigate redux as well as other alternatives
-        const url = 'https://localhost:44382/api/Provider';
+        const url = 'http://patientintake.shuthuluwhiskeyroses.com/api/Provider';
 
         const response = await fetch(url);
         const providerList = await response.json();

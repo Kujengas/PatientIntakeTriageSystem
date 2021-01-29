@@ -17,7 +17,7 @@ export const theme = createMuiTheme({
         },
     },
     typography: {
-        fontFamily: 'Do Hyeon',
+        fontFamily: 'Arial'/*'Do Hyeon'*/,
         fontWeightLight: 200,
         fontWeightRegular: 300,
     },

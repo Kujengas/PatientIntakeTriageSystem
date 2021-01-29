@@ -72,7 +72,7 @@ const useStyles = makeStyles((theme) => ({
     image: {
         width: drawerWidth,
         height: undefined,
-        aspectRatio: 1,
+ 
     }
 
 
@@ -161,7 +161,7 @@ function ResponsiveDrawer(props) {
         <div>
             <div className={classes.toolbar} />
 
-            <img src={process.env.PUBLIC_URL + '/swmlogo.png'} className={classes.image}/>;
+            <img src={process.env.PUBLIC_URL + '/swmlogo-main.png'} className={classes.image}/>;
             <Divider />
 
 
