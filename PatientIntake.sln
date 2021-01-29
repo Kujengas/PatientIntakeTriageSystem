@@ -11,8 +11,6 @@ Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "PatientIntake.SQL", "Patien
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PatientIntake.Model", "PatientIntake.Model\PatientIntake.Model.csproj", "{37BC0EEB-4A97-4164-BBE2-90ECB54860A5}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PatientIntake.WebClientTest1", "PatientIntake.WebClientTest1\PatientIntake.WebClientTest1.csproj", "{37AA622F-6E12-47A8-9B9B-9227953B3E22}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PatientIntake.DataAccess.Tests", "PatientIntake.DataAccess.Tests\PatientIntake.DataAccess.Tests.csproj", "{FFA99439-20CC-44A6-8D89-7B42EAEA80B4}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PatientIntake.WebApi", "PatientIntake.WebApi\PatientIntake.WebApi.csproj", "{A854FD2E-40BC-425C-ACE4-959E4A4A8317}"
@@ -62,10 +60,6 @@ Global
 		{37BC0EEB-4A97-4164-BBE2-90ECB54860A5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{37BC0EEB-4A97-4164-BBE2-90ECB54860A5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{37BC0EEB-4A97-4164-BBE2-90ECB54860A5}.Release|Any CPU.Build.0 = Release|Any CPU
-		{37AA622F-6E12-47A8-9B9B-9227953B3E22}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{37AA622F-6E12-47A8-9B9B-9227953B3E22}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{37AA622F-6E12-47A8-9B9B-9227953B3E22}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{37AA622F-6E12-47A8-9B9B-9227953B3E22}.Release|Any CPU.Build.0 = Release|Any CPU
 		{FFA99439-20CC-44A6-8D89-7B42EAEA80B4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{FFA99439-20CC-44A6-8D89-7B42EAEA80B4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FFA99439-20CC-44A6-8D89-7B42EAEA80B4}.Release|Any CPU.ActiveCfg = Release|Any CPU
