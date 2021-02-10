@@ -1,7 +1,7 @@
 ﻿
 
-//const sitePrefix = 'http://patientintake.shuthuluwhiskeyroses.com/';
-const sitePrefix = 'https://localhost:44382/';
+const sitePrefix = 'http://patientintake.shuthuluwhiskeyroses.com/';
+//const sitePrefix = 'https://localhost:44382/';
 
 
 const apiPrefix = sitePrefix + 'api/';
