@@ -19,6 +19,9 @@ import ListItemText from '@material-ui/core/ListItemText';
 import TextField from '@material-ui/core/TextField';
 import Grid from '@material-ui/core/Grid';
 
+import { useSelector, useDispatch } from 'react-redux';
+import { createPatientRequestAction, patientListRequestAction} from '../store/actions';
+
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -46,177 +49,170 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-
-const save = async () => {
-    var patient = {
-        FirstName: '',
-        LastName: '',
-        MiddleName: '',
-        Suffix: '',
-        Prefix: '',
-        DateOfBirth: '',
-        Phone: '',
-        Email: '',
-        AddressLine1: '',
-        AddressLine2: '',
-        AddressCity: '',
-        AddressState: '',
-        AddressPostalCode: '',
-        OfficePhone: '',
-        Fax: '',
-        PatientStatus: '',
-        Gender: '',
-        Marital_Status: '',
-        ContactBy: '',
-        Race: '',
-        SSN: '',
-        SpokenLanguage: '',
-        RespProv: '',
-        MRN: '',
-        Referredby: '',
-        EmpStatus: '',
-        SensChart: '',
-        HomeLocation: '',
-        ExternalID: '',
-    };
-
-    patient.FirstName = document.getElementById('txtFirstName').value || "";
-    patient.LastName = document.getElementById('txtLastName').value || "";
-    patient.MiddleName = document.getElementById('txtMiddleName').value || "";
-    patient.Suffix = document.getElementById('txtSuffix').value || "";
-    patient.Prefix = document.getElementById('txtPrefix').value || "";
-    patient.DateOfBirth = document.getElementById('txtDateOfBirth').value || "";
-    patient.Phone = document.getElementById('txtPhone').value || "";
-    patient.Email = document.getElementById('txtEmail').value || "";
-    patient.AddressLine1 = document.getElementById('txtAddressLine1').value || "";
-    patient.AddressLine2 = document.getElementById('txtAddressLine2').value || "";
-    patient.AddressCity = document.getElementById('txtAddressCity').value || "";
-    patient.AddressState = document.getElementById('txtAddressState').value || "";
-    patient.AddressPostalCode = document.getElementById('txtAddressPostalCode').value || "";
-    patient.OfficePhone = document.getElementById('txtOfficePhone').value || "";
-    patient.Fax = document.getElementById('txtFax').value || "";
-    patient.Gender = document.getElementById('txtGender').value || "";
-    patient.Marital_Status = document.getElementById('txtMarital_Status').value || "";
-    patient.ContactBy = document.getElementById('txtContactBy').value || "";
-    patient.Race = document.getElementById('txtRace').value || "";
-    patient.SSN = document.getElementById('txtSSN').value || "";
-    patient.SpokenLanguage = document.getElementById('txtSpokenLanguage').value || "";
-
-
-    //TODO: Move all api calls to a common store
-        //reinvestigate redux as well as other alternatives
-        const url = 'http://patientintake.shuthuluwhiskeyroses.com/api/Patient';
-
-
-    const response = await fetch(url, {
-        method: 'POST',
-        body: JSON.stringify(patient),
-        headers: { 'Content-Type': 'application/json' }
-    });
-
-    console.log(response);
-
-}
-
-
-
-function getSteps() {
-    return ['Patient Demographics', 'Patient Contact Information'];
-}
-
-const renderDemographicsForm = () => {
-    return (
-        <Grid container spacing={5} padding={10}>
-            <Grid container item xs={12} spacing={5}>
-                <TextField label="Last Name" id="txtLastName" InputLabelProps={{ shrink: true }} />
-                <TextField label="First Name" id="txtFirstName" InputLabelProps={{ shrink: true }} />
-                <TextField label="Middle Name" id="txtMiddleName" InputLabelProps={{ shrink: true }} />
-            </Grid>
-            <Grid container item xs={12} spacing={5}>
-
-                <TextField label="Suffix" id="txtSuffix" InputLabelProps={{ shrink: true }} />
-                <TextField label="Prefix" id="txtPrefix" InputLabelProps={{ shrink: true }} />
-                <TextField label="SSN" id="txtSSN" InputLabelProps={{ shrink: true }} />
-            </Grid>
-            <Grid container item xs={12} spacing={5}>
-                <TextField label="Date Of Birth" id="txtDateOfBirth" InputLabelProps={{ shrink: true }} type="date" />
-                <TextField label="Gender" id="txtGender" InputLabelProps={{ shrink: true }} />
-                <TextField label="Race" id="txtRace" InputLabelProps={{ shrink: true }} />
-            </Grid>
-            <Grid container item xs={12} spacing={5}>
-                <TextField label="Spoken Language" id="txtSpokenLanguage" InputLabelProps={{ shrink: true }} />
-                <TextField label="Marital Status" id="txtMarital_Status" InputLabelProps={{ shrink: true }} />
-            </Grid>
-        </Grid>
-    );
-}
-
-const renderContactForm = () => {
-    return (<Grid container spacing={8} >
-        <Grid container item xs={12} spacing={5}>
-            <TextField label="Address Line1" id="txtAddressLine1" InputLabelProps={{ shrink: true }} />
-            <TextField label="Address Line2" id="txtAddressLine2" InputLabelProps={{ shrink: true }} />
-        </Grid>
-        <Grid container item xs={12} spacing={5}>
-            <TextField label="Address City" id="txtAddressCity" InputLabelProps={{ shrink: true }} />
-            <TextField label="Address State" id="txtAddressState" InputLabelProps={{ shrink: true }} />
-            <TextField label="Address PostalCode" id="txtAddressPostalCode" InputLabelProps={{ shrink: true }} />
-        </Grid>
-        <Grid container item xs={12} spacing={5}>
-            <TextField label="Phone" id="txtPhone" InputLabelProps={{ shrink: true }} />
-            <TextField label="Office Phone" id="txtOfficePhone" InputLabelProps={{ shrink: true }} />
-            <TextField label="Fax" id="txtFax" InputLabelProps={{ shrink: true }} />
-        </Grid>
-        <Grid container item xs={12} spacing={5}>
-            <TextField label="Email" id="txtEmail" InputLabelProps={{ shrink: true }} />
-            <TextField label="Contact By" id="txtContactBy" InputLabelProps={{ shrink: true }} />
-        </Grid>
-    </Grid>);
-}
-
-const allSteps = [];
-
-const populateSteps = () => {
-
-    allSteps.push(renderDemographicsForm());
-    allSteps.push(renderContactForm());
-}
-
-function getStepContent(step) {
-
-    return (<>
-        {allSteps.map(
-            (stepCmp, index) => {
-                return <div hidden={index !== step}>{stepCmp}</div>
-            })
-        }
-    </>
-    );
-
-}
-
 export default function NewPatientStepperModal() {
+
+
     const classes = useStyles();
     const [activeStep, setActiveStep] = React.useState(0);
     const [completed, setCompleted] = React.useState({});
     const [open, setOpen] = React.useState(false);
-    populateSteps();
+    const dispatch = useDispatch();
+
     const steps = getSteps();
 
+
+    const save = async () => {
+        var patient = {
+            FirstName: '',
+            LastName: '',
+            MiddleName: '',
+            Suffix: '',
+            Prefix: '',
+            DateOfBirth: '',
+            Phone: '',
+            Email: '',
+            AddressLine1: '',
+            AddressLine2: '',
+            AddressCity: '',
+            AddressState: '',
+            AddressPostalCode: '',
+            OfficePhone: '',
+            Fax: '',
+            PatientStatus: '',
+            Gender: '',
+            Marital_Status: '',
+            ContactBy: '',
+            Race: '',
+            SSN: '',
+            SpokenLanguage: '',
+            RespProv: '',
+            MRN: '',
+            Referredby: '',
+            EmpStatus: '',
+            SensChart: '',
+            HomeLocation: '',
+            ExternalID: '',
+        };
+
+        patient.FirstName = document.getElementById('txtFirstName').value || "";
+        patient.LastName = document.getElementById('txtLastName').value || "";
+        patient.MiddleName = document.getElementById('txtMiddleName').value || "";
+        patient.Suffix = document.getElementById('txtSuffix').value || "";
+        patient.Prefix = document.getElementById('txtPrefix').value || "";
+        patient.DateOfBirth = document.getElementById('txtDateOfBirth').value || "";
+        patient.Phone = document.getElementById('txtPhone').value || "";
+        patient.Email = document.getElementById('txtEmail').value || "";
+        patient.AddressLine1 = document.getElementById('txtAddressLine1').value || "";
+        patient.AddressLine2 = document.getElementById('txtAddressLine2').value || "";
+        patient.AddressCity = document.getElementById('txtAddressCity').value || "";
+        patient.AddressState = document.getElementById('txtAddressState').value || "";
+        patient.AddressPostalCode = document.getElementById('txtAddressPostalCode').value || "";
+        patient.OfficePhone = document.getElementById('txtOfficePhone').value || "";
+        patient.Fax = document.getElementById('txtFax').value || "";
+        patient.Gender = document.getElementById('txtGender').value || "";
+        patient.Marital_Status = document.getElementById('txtMarital_Status').value || "";
+        patient.ContactBy = document.getElementById('txtContactBy').value || "";
+        patient.Race = document.getElementById('txtRace').value || "";
+        patient.SSN = document.getElementById('txtSSN').value || "";
+        patient.SpokenLanguage = document.getElementById('txtSpokenLanguage').value || "";
+
+
+        //const response = savePatient(patient);
+
+       // console.log(response);
+
+        dispatch(createPatientRequestAction(patient));
+        dispatch(patientListRequestAction());
+        handleClose();
+       
+    }
+
+    function getSteps() {
+        return ['Patient Demographics', 'Patient Contact Information'];
+    }
+
+    const renderDemographicsForm = () => {
+        return (
+            <Grid container spacing={5} padding={10}>
+                <Grid container item xs={12} spacing={5}>
+                    <TextField label="Last Name" id="txtLastName" InputLabelProps={{ shrink: true }} />
+                    <TextField label="First Name" id="txtFirstName" InputLabelProps={{ shrink: true }} />
+                    <TextField label="Middle Name" id="txtMiddleName" InputLabelProps={{ shrink: true }} />
+                </Grid>
+                <Grid container item xs={12} spacing={5}>
+
+                    <TextField label="Suffix" id="txtSuffix" InputLabelProps={{ shrink: true }} />
+                    <TextField label="Prefix" id="txtPrefix" InputLabelProps={{ shrink: true }} />
+                    <TextField label="SSN" id="txtSSN" InputLabelProps={{ shrink: true }} />
+                </Grid>
+                <Grid container item xs={12} spacing={5}>
+                    <TextField label="Date Of Birth" id="txtDateOfBirth" InputLabelProps={{ shrink: true }} type="date" />
+                    <TextField label="Gender" id="txtGender" InputLabelProps={{ shrink: true }} />
+                    <TextField label="Race" id="txtRace" InputLabelProps={{ shrink: true }} />
+                </Grid>
+                <Grid container item xs={12} spacing={5}>
+                    <TextField label="Spoken Language" id="txtSpokenLanguage" InputLabelProps={{ shrink: true }} />
+                    <TextField label="Marital Status" id="txtMarital_Status" InputLabelProps={{ shrink: true }} />
+                </Grid>
+            </Grid>
+        );
+    }
+
+    const renderContactForm = () => {
+        return (<Grid container spacing={8} >
+            <Grid container item xs={12} spacing={5}>
+                <TextField label="Address Line1" id="txtAddressLine1" InputLabelProps={{ shrink: true }} />
+                <TextField label="Address Line2" id="txtAddressLine2" InputLabelProps={{ shrink: true }} />
+            </Grid>
+            <Grid container item xs={12} spacing={5}>
+                <TextField label="Address City" id="txtAddressCity" InputLabelProps={{ shrink: true }} />
+                <TextField label="Address State" id="txtAddressState" InputLabelProps={{ shrink: true }} />
+                <TextField label="Address PostalCode" id="txtAddressPostalCode" InputLabelProps={{ shrink: true }} />
+            </Grid>
+            <Grid container item xs={12} spacing={5}>
+                <TextField label="Phone" id="txtPhone" InputLabelProps={{ shrink: true }} />
+                <TextField label="Office Phone" id="txtOfficePhone" InputLabelProps={{ shrink: true }} />
+                <TextField label="Fax" id="txtFax" InputLabelProps={{ shrink: true }} />
+            </Grid>
+            <Grid container item xs={12} spacing={5}>
+                <TextField label="Email" id="txtEmail" InputLabelProps={{ shrink: true }} />
+                <TextField label="Contact By" id="txtContactBy" InputLabelProps={{ shrink: true }} />
+            </Grid>
+        </Grid>);
+    }
+
+    const allSteps = [];
+
+    const populateSteps = () => {
+
+        allSteps.push(renderDemographicsForm());
+        allSteps.push(renderContactForm());
+    }
+
+    const getStepContent = (step) =>{
+
+        return (<>
+            {allSteps.map(
+                (stepCmp, index) => {
+                    return <div hidden={index !== step}>{stepCmp}</div>
+                })
+            }
+        </>
+        );
+
+    }
 
     const handleClickOpen = () => {
         setOpen(true);
     };
+
     const handleClose = () => {
         setOpen(false);
     };
 
-
     const handleSave = () => {
         save();
     };
-
-
 
     const totalSteps = () => {
         return steps.length;
@@ -279,6 +275,7 @@ export default function NewPatientStepperModal() {
         );
     });
 
+    populateSteps();
 
     return (
         <div>

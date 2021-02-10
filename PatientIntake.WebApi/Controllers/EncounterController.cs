@@ -63,6 +63,41 @@ namespace PatientIntake.WebApi.Controllers
             EncounterData.UpdateEncounter(encounter);
         }
 
+
+        // POST: api/Encounter/Checkin
+        [Route("api/Encounter/Checkin/")]
+        [HttpPost]
+        public void CheckInPatientByEncounterId([FromBody] int encounterId)
+        {
+            EncounterData.CheckInPatientByEncounterId(encounterId);
+        }
+
+        // POST: api/Encounter/Checkout
+        [Route("api/Encounter/Checkout/")]
+        [HttpPost]
+        public void CheckOutPatientByEncounterId([FromBody] int encounterId)
+        {
+            EncounterData.CheckOutPatientByEncounterId(encounterId);
+        }
+
+        // POST: api/Encounter/Cancel
+        [Route("api/Encounter/Cancel/")]
+        [HttpPost]
+        public void CancelEncounter([FromBody] int encounterId)
+        {
+            EncounterData.CancelEncounter(encounterId);
+        }
+
+        // POST: api/Encounter/Assign
+        [Route("api/Encounter/Assign/")]
+        [HttpPost]
+        public void AssignEncounterToRoom([FromBody]RoomAssignmentDTO dto)
+        {
+            EncounterData.AssignEncounterToRoom(dto);
+        }
+
+
+
         /*
         // DELETE: api/Encounter/5
         public void Delete([FromBody] Encounter encounter)

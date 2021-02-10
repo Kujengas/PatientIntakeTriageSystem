@@ -2,15 +2,15 @@
 import TextField from '@material-ui/core/TextField';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import { Typography } from '@material-ui/core';
+import { useSelector, useDispatch } from 'react-redux';
+import { patientListRequestAction } from '../store/actions';
 
 
-export default function PatientSearch({ value, onChange, id, data = [], isRequired='' }) {
+export default function PatientSearch({ value, onChange, id, data = [], isRequired = '' }) {
 
-    const [patients, setPatients] = useState(data);
+    //const [patients, setPatients] = useState(data);
+    //const [loading, setLoading] = useState(true);
     const [currentPatient, setCurentPatient] = useState({});
-    const [loading, setLoading] = useState(true);
-
-
 
     const handleChange = (event, newValue) => {
         setCurentPatient(newValue);
@@ -19,27 +19,13 @@ export default function PatientSearch({ value, onChange, id, data = [], isRequir
         }
     };
 
-    const fetchPatientList = async () => {
-
-        //TODO: Move all api calls to a common store
-        //reinvestigate redux as well as other alternatives
-        const url = 'http://patientintake.shuthuluwhiskeyroses.com/api/Patient';
-
-        const response = await fetch(url);
-        const patientList = await response.json();
-
-        //console.log(response);
-        //console.log(patientList);
-
-        setPatients(patientList);
-        setLoading(false);
-    }
-
+    const patientListState = useSelector(state => state.patientList);
+    const dispatch = useDispatch();
 
     useEffect(() => {
-        if (patients.length == 0) {
-            fetchPatientList();
-        } else { setLoading(false);}
+        if (patientListState.patients.length == 0) {
+            dispatch(patientListRequestAction());
+        } //else { setLoading(false);}
     }, []);
 
 
@@ -48,10 +34,10 @@ export default function PatientSearch({ value, onChange, id, data = [], isRequir
         <Autocomplete
             id={id}
             disableListWrap
-            options={patients}
+            options={patientListState.patients}
             getOptionLabel={(option) => option.FirstName + " " + option.MiddleName + " " + option.LastName}
             onChange={(event, newValue) => { handleChange(event, newValue) }}
-            renderInput={(params) => <TextField {...params} variant="outlined" InputLabelProps={{ shrink: true }}  label="Patient Search" />}
+            renderInput={(params) => <TextField {...params} variant="outlined" InputLabelProps={{ shrink: true }} label="Patient Search" />}
             renderOption={(option) => <Typography noWrap><div>
                 <div>
                     {option.FirstName + " " + option.MiddleName + " " + option.LastName}

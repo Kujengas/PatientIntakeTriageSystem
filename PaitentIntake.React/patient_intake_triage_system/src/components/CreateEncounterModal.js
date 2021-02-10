@@ -20,6 +20,8 @@ import ScheduleIcon from '@material-ui/icons/Schedule';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
+import { useSelector, useDispatch } from 'react-redux';
+import { locationDashboardRequestAction, saveEncounterRequestAction } from '../store/actions';
 
 
 const styles = (theme) => ({
@@ -38,8 +40,8 @@ const styles = (theme) => ({
         marginBlock: 30
     }
 
-       
-   
+
+
 });
 
 
@@ -88,7 +90,7 @@ const DialogActions = withStyles((theme) => ({
     },
 }))(MuiDialogActions);
 
-export default function CreateEncounterModal({ locationId='' }) {
+export default function CreateEncounterModal({ locationId = '' }) {
     console.log(locationId);
     const [open, setOpen] = useState(false);
     const [patient, setPatient] = useState({});
@@ -98,6 +100,7 @@ export default function CreateEncounterModal({ locationId='' }) {
     const [encounter, setEncounter] = useState({});
     const [location, setLocation] = useState({});
     const [isSaveDisabled, setIsSaveDisabled] = useState(true);
+    const dispatch = useDispatch();
 
     const handleClickOpen = () => {
         setOpen(true);
@@ -107,62 +110,43 @@ export default function CreateEncounterModal({ locationId='' }) {
         setPatient({});
         setProvider({});
         setComment("");
-        setScheduledDate(null)
+        setScheduledDate(null);
+        if (location != null) {
+            dispatch(locationDashboardRequestAction(location.Id));
+        }
         setOpen(false);
     };
 
-  
-   
     const classes = styles;
-
-    useEffect(() => {
-
-    }, []);
 
 
     const buildEncounter = () => {
         setIsSaveDisabled(!canSave());
 
         return ({
-            PatientId: patient.Id || '',
-            ProviderId: provider.Id || '',
-            LocationId: location.Id||'',
-            ScheduledTime: scheduledDate ||'',//document.getElementById('scheduleTime').value||''
-            Comments:comment
+            PatientId: (patient != null) ? patient.Id : '',
+            ProviderId: (provider != null) ? provider.Id : '',
+            LocationId: (location != null) ? location.Id : '',
+            ScheduledTime: scheduledDate || '',//document.getElementById('scheduleTime').value||''
+            Comments: comment
         });
 
     };
 
+    const saveEncounterData = () => {
 
-    const saveEncounter = async () => {
-
-      
-
-
-        //TODO: Move all api calls to a common store
-        //reinvestigate redux as well as other alternatives
-        const url = 'http://patientintake.shuthuluwhiskeyroses.com/api/Encounter';
-
-        const response = await fetch(url, {
-            method: 'POST',
-            body: JSON.stringify(buildEncounter()),
-            headers: { 'Content-Type': 'application/json' }
-        });
-
-        console.log(buildEncounter());
-     
-
+        let encounterData = buildEncounter();
+        dispatch(saveEncounterRequestAction(encounterData));
         handleClose();
-        console.log(response);
     }
 
     const handleChange = (event, newValue) => {
 
-        console.log("changed!!");
-        console.log(event);
-        console.log(newValue || null);
+        //console.log("changed!!");
+       // console.log(event);
+       // console.log(newValue || null);
 
-        switch (event){
+        switch (event) {
             case "patientSearch":
                 setPatient(newValue);
                 break;
@@ -174,6 +158,7 @@ export default function CreateEncounterModal({ locationId='' }) {
                 break;
 
         }
+        setIsSaveDisabled(!canSave());
         console.log(buildEncounter());
     };
 
@@ -185,72 +170,67 @@ export default function CreateEncounterModal({ locationId='' }) {
     const notesHandler = (e) => {
 
         console.log(e);
-       setComment(e.target.value);
-       console.log(buildEncounter());
+        setComment(e.target.value);
+        console.log(buildEncounter());
     }
 
     const canSave = () => {
-        if (scheduledDate == "") { return false;}
-        if (patient.Id == null) { return false; }
-        if (location.Id == null) { return false; }
+        if (scheduledDate == "") { return false; }
+        if (patient == null) { return false; }
+        if (location == null) { return false; }
 
         return true;
     };
 
     return (
         <div>
-         
 
             <ListItem button onClick={handleClickOpen} >
                 <ListItemIcon> <ScheduleIcon /></ListItemIcon>
                 <ListItemText primary="Create Encounter" />
             </ListItem>
 
-
             <Dialog onClose={handleClose} aria-labelledby="customized-dialog-title" disableBackdropClick open={open}>
                 <DialogTitle id="customized-dialog-title" onClose={handleClose}>
                     Create Encounter
         </DialogTitle>
                 <DialogContent dividers>
-                   
-                        <Paper className={classes.paper}>
 
+                    <Paper className={classes.paper}>
 
+                        <LocationSearch id="locationSearch" isRequired="required" onChange={handleChange} />
 
-                       
-                        <LocationSearch id="locationSearch"  isRequired="required" onChange={handleChange} />
+                        <br />
 
-                        <br/>
-
-                            <PatientSearch id="patientSearch" isRequired="required" onChange={handleChange} />
-                            <br />
-                        <TextField 
-                                id="scheduleTime"
-                                label="Next appointment"
-                                type="datetime-local"
+                        <PatientSearch id="patientSearch" isRequired="required" onChange={handleChange} />
+                        <br />
+                        <TextField
+                            id="scheduleTime"
+                            label="Next appointment"
+                            type="datetime-local"
                             defaultValue={Date.now} onChange={timeHandler}
                             className={classes.textField} required
-                                InputLabelProps={{
-                                    shrink: true,
-                                }}
-                            />
-                            <br />
+                            InputLabelProps={{
+                                shrink: true,
+                            }}
+                        />
+                        <br />
                         <ProviderSearch id="providerSearch" onChange={handleChange} />
                         <br />
                         <TextField
                             id="additionalNote"
                             label="Additional Note"
                             onChange={notesHandler}
-                            className={classes.textField} 
+                            className={classes.textField}
                             InputLabelProps={{
                                 shrink: true,
                             }}
                         />
                         <br />
-                        </Paper>
+                    </Paper>
                 </DialogContent>
                 <DialogActions>
-                    <Button autoFocus onClick={saveEncounter} disabled={isSaveDisabled} color="Secondary" >
+                    <Button autoFocus onClick={saveEncounterData} disabled={isSaveDisabled} color="Secondary" >
                         Save Encounter
           </Button>
                 </DialogActions>

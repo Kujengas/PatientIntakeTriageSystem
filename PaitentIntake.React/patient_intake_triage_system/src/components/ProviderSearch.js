@@ -2,15 +2,16 @@
 import TextField from '@material-ui/core/TextField';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import { Typography } from '@material-ui/core';
+import { useSelector, useDispatch } from 'react-redux';
+import { providerListRequestAction } from '../store/actions';
 
 
 export default function PatientSearch({ value, onChange , id, data  = [] }) {
 
-    const [providers, setProviders] = useState(data);
+   // const [loading, setLoading] = useState(true);
+   // const [providers, setProviders] = useState(data);
     const [currentProvider, setCurrentProvider] = useState({});
-    const [loading, setLoading] = useState(true);
-
-
+  
 
     const handleChange = (event, newValue) => {
         setCurrentProvider(newValue);
@@ -19,36 +20,21 @@ export default function PatientSearch({ value, onChange , id, data  = [] }) {
         }
     };
 
-    const fetchProviderList = async () => {
-
-        //TODO: Move all api calls to a common store
-        //reinvestigate redux as well as other alternatives
-        const url = 'http://patientintake.shuthuluwhiskeyroses.com/api/Provider';
-
-        const response = await fetch(url);
-        const providerList = await response.json();
-
-        //console.log(response);
-        //console.log(providerList);
-
-        setProviders(providerList);
-        setLoading(false);
-    }
-
+    const providerListState = useSelector(state => state.providerList);
+    const dispatch = useDispatch();
 
     useEffect(() => {
-        if (providers.length == 0) {
-            fetchProviderList();
-        } else { setLoading(false);}
+        if (providerListState.providers.length == 0) {
+            dispatch(providerListRequestAction());
+        } //else { setLoading(false);}
     }, []);
-
 
     return (<div >
 
         <Autocomplete
             id={id}
             disableListWrap
-            options={providers}
+            options={providerListState.providers}
             getOptionLabel={(option) => option.Prefix + " " + option.FirstName + " "+ option.LastName + " " + option.Suffix}
             onChange={(event, newValue) => { handleChange(event, newValue) }}
 

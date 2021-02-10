@@ -9,6 +9,9 @@ import TableRow from '@material-ui/core/TableRow';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
+import { getAttributeList } from '../store/api';
+import { useSelector, useDispatch } from 'react-redux';
+import { saveEncounterClinicalDataRequestAction, attributeListRequestAction } from '../store/actions';
 
 const useStyles = makeStyles({
     root: {
@@ -26,12 +29,19 @@ function ClinicalDataEntry({ encounterid }) {
     const classes = useStyles();
     const [encounterId, setEncounterId] = useState(encounterid);
 
+
+    const attributeList = useSelector(state => state.attributeList);
+    const dispatch = useDispatch();
+
+
+
+
     useEffect(() => {
         fetchAttributeList();
     }, []);
 
-    const handleSave = () => {
-        saveEncounterAttributes();
+    const handleSave = () => {       
+        dispatch(saveEncounterClinicalDataRequestAction(buildEncounter()));
     };
 
     const buildEncounter = () => {
@@ -41,8 +51,11 @@ function ClinicalDataEntry({ encounterid }) {
 
             console.log(data);
             console.log(a);
+
+            console.log("encounterID:"+encounterid);
             var controlId = "txt" + data[a].AttributeCode;
 
+            console.log(controlId);
             if (document.getElementById(controlId).value != "") {
                 attributeData.push(
                     {
@@ -54,51 +67,24 @@ function ClinicalDataEntry({ encounterid }) {
                 )
             }
         }
-        console.log(attributeData);
+       console.log(attributeData);
         return attributeData;
     };
 
-
-    const saveEncounterAttributes = async () => {
-
-        //TODO: Move all api calls to a common store
-        //reinvestigate redux as well as other alternatives
-        const url = 'http://patientintake.shuthuluwhiskeyroses.com/api/Encounter/Attributes';
-
-        const response = await fetch(url, {
-            method: 'POST',
-            body: JSON.stringify(buildEncounter()),
-            headers: { 'Content-Type': 'application/json' }
-        });
-
-        console.log(buildEncounter());
-        //handleClose();
-        console.log(response);
-    }
-
-
     const fetchAttributeList = async () => {
-
-        //TODO: Move all api calls to a common store
-        //reinvestigate redux as well as other alternatives
-        const url = 'http://patientintake.shuthuluwhiskeyroses.com/api/Encounter/AttributeFields/';
-
-        const response = await fetch(url);
-
-        const attributeList = await response.json();
-
-        console.log(response);
-        console.log(attributeList);
-
+       // dispatch(attributeListRequestAction());
+        const attributeList = await getAttributeList();
+     
+       // console.log(attributeList);
         setData(attributeList);
-        setLoading(false);
+       // setLoading(false);
     }
 
     //const classes = useStyles();
 
     return (<div>
 
-        { loading ? <CircularProgress /> :
+        { attributeList.isAttributeListLoading ? <CircularProgress /> :
 
 
             <Paper className={classes.root}>
@@ -107,7 +93,7 @@ function ClinicalDataEntry({ encounterid }) {
 
                         <TableBody>
                             {
-                                data.map(attribute =>
+                                attributeList.attributes.map(attribute =>
                                     <TableRow>
                                         <TableCell>{attribute.Title}</TableCell>
                                         <TableCell>  <TextField label={attribute.Title} id={"txt" + attribute.AttributeCode} InputLabelProps={{ shrink: true }} /></TableCell>

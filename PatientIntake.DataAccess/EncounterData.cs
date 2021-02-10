@@ -136,8 +136,6 @@ namespace PatientIntake.DataAccess
             return encounter;
         }
 
-
-
         public static List<EncounterAttribute> GetAttributeValuesByEncounter(int id)
         {
             var lst = new List<EncounterAttribute>();
@@ -171,8 +169,6 @@ namespace PatientIntake.DataAccess
             return lst;
         }
 
-
-
         public static List<AttributeField> GetAttributeList()
         {
             var lst = new List<AttributeField>();
@@ -199,7 +195,6 @@ namespace PatientIntake.DataAccess
             }
             return lst;
         }
-
 
         public static int InsertAttributeList(List<IdAttributeDTO> attributeList)
         {
@@ -234,7 +229,44 @@ namespace PatientIntake.DataAccess
             }
         }
 
+
+        public static int CheckInPatientByEncounterId(int id)
+        {
+            var parameters = new List<SqlParameter>();
+
+            parameters.Add(new SqlParameter("@EncounterId", id));
+           
+            return Database.ExecuteCommand("CheckInPatientByEncounterId", parameters);
+        }
+
+        public static int AssignEncounterToRoom(RoomAssignmentDTO dto)
+        {
+            var parameters = new List<SqlParameter>();
+
+            parameters.Add(new SqlParameter("@EncounterId", dto.EncounterId));
+            parameters.Add(new SqlParameter("@RoomId", dto.RoomId));
+
+            return Database.ExecuteCommand("AssignEncounterToRoom", parameters);
+        }
+
+
+        public static int CheckOutPatientByEncounterId(int id)
+        {
+            var parameters = new List<SqlParameter>();
+
+            parameters.Add(new SqlParameter("@EncounterId", id));
+
+            return Database.ExecuteCommand("CheckOutPatientByEncounterId", parameters);
+        }
+
+        public static int CancelEncounter(int id)
+        {
+            var parameters = new List<SqlParameter>();
+
+            parameters.Add(new SqlParameter("@EncounterId", id));
+
+            return Database.ExecuteCommand("CancelEncounter", parameters);
+        }
+
     }
 }
-
-

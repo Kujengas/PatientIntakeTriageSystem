@@ -14,10 +14,10 @@ namespace PatientIntake.DataAccess
         {
             SqlConnectionStringBuilder builder = new SqlConnectionStringBuilder
             {
-                DataSource = "",
-                UserID = "",
-                Password ="", 
-                InitialCatalog = ""
+                DataSource = "sql5065.site4now.net",
+                UserID = "DB_A4BBBD_SWUPDB_admin",
+                Password = "swupdb1234",
+                InitialCatalog = "DB_A4BBBD_SWUPDB"
             };
 
             return builder.ConnectionString;

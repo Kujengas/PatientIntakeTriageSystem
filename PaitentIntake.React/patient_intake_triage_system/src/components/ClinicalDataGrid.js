@@ -9,6 +9,9 @@ import TableHead from '@material-ui/core/TableHead';
 import TablePagination from '@material-ui/core/TablePagination';
 import TableRow from '@material-ui/core/TableRow';
 import CircularProgress from '@material-ui/core/CircularProgress';
+//import { getEncounterClinicalData } from '../store/api';
+import { useSelector, useDispatch } from 'react-redux';
+import { getEncounterClinicalDataRequestAction } from '../store/actions';
 
 const useStyles = makeStyles({
     root: {
@@ -27,26 +30,25 @@ function ClinicalData({ encounterid }) {
     const classes = useStyles();
     const [encounterId, setEncounterId] = useState(encounterid);
     
+    const encounterClinicalData = useSelector(state => state.loadedEncounterClinicalData);
+    const dispatch = useDispatch();
 
     useEffect(() => {
-        fetchProviderList();
-    }, []);
+        fetchClinicalData();
+   
+    }, {});
 
 
-    const fetchProviderList = async () => {
-        //TODO: Move all api calls to a common store
-        //reinvestigate redux as well as other alternatives
-        const url = `http://patientintake.shuthuluwhiskeyroses.com/api/Encounter/Attributes/${encounterId}`;
+    const fetchClinicalData = () => {
+ 
+       // const patientDataList = await getEncounterClinicalData(encounterId);
 
-        const response = await fetch(url);
+        dispatch(getEncounterClinicalDataRequestAction(encounterId));
 
-        const patientDataList = await response.json();
+      //  console.log(patientDataList);
 
-        console.log(response);
-        console.log(patientDataList);
-
-        setData(patientDataList);
-        setLoading(false);
+      //  setData(patientDataList);
+       // setLoading(false);
 
     }
 
@@ -54,13 +56,13 @@ function ClinicalData({ encounterid }) {
 
     return (<div>
 
-        { loading ? <CircularProgress /> :
+        { encounterClinicalData.isClinicalDataLoading ? <CircularProgress /> :
             <Paper className={classes.root}>
                 <TableContainer className={classes.container}>
                     <Table stickyHeader aria-label="sticky table">
                         <TableBody>
                             {
-                                data.map(patientData =>
+                                encounterClinicalData.clinicalData.map(patientData =>
                                     <TableRow>
                                         <TableCell>{patientData.Title}</TableCell>
                                         <TableCell>{patientData.AttributeValue}</TableCell>

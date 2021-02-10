@@ -10,6 +10,8 @@ import TablePagination from '@material-ui/core/TablePagination';
 import TableRow from '@material-ui/core/TableRow';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import moment from 'moment';
+import { useSelector, useDispatch } from 'react-redux';
+import { patientListRequestAction } from '../store/actions';
 
 const useStyles = makeStyles({
     root: {
@@ -57,40 +59,17 @@ var patient = {
 
 function PatientContactList() {
 
-    const [data, setData] = useState([]);
-    const [loading, setLoading] = useState(true);
-    const classes = useStyles();
-
-
+    const patientListState = useSelector(state => state.patientList);
+    const dispatch = useDispatch();
     useEffect(() => {
-        fetchPatientList();
+        dispatch(patientListRequestAction());
     }, []);
 
-
-    const fetchPatientList = async () => {
-        //TODO: Move all api calls to a common store
-        //reinvestigate redux as well as other alternatives
-        const url = 'http://patientintake.shuthuluwhiskeyroses.com/api/Patient';
-
-        const response = await fetch(url);
-
-        const patientList = await response.json();
-
-        console.log(response);
-        console.log(patientList);
-
-        setData(patientList);
-        setLoading(false);
-
-    }
-
-    //const classes = useStyles();
+   const classes = useStyles();
 
     return (<div>
 
-        { loading ? <CircularProgress /> :
-
-
+        { patientListState.isPatientListLoading ? <CircularProgress /> :
 
             <Paper className={classes.root}>
                 <h1>Patient List</h1>
@@ -113,7 +92,7 @@ function PatientContactList() {
                         </TableHead>
 
                         <TableBody>
-                        {data.map(patient =>
+                            {patientListState.patients.map(patient =>
                             <TableRow>
                                 <TableCell>{patient.FirstName} {patient.LastName}</TableCell>
                                 <TableCell>{moment(new Date(patient.DateOfBirth)).format('l')}</TableCell> 
