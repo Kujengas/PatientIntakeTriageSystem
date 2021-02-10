@@ -30,10 +30,10 @@ function ClinicalDataEntry({ encounterid }) {
     const [encounterId, setEncounterId] = useState(encounterid);
 
 
-    const attributeList = useSelector(state => state.attributeList);
+   // const attributeList = useSelector(state => state.attributeList);
     const dispatch = useDispatch();
 
-
+    
 
 
     useEffect(() => {
@@ -73,18 +73,18 @@ function ClinicalDataEntry({ encounterid }) {
 
     const fetchAttributeList = async () => {
        // dispatch(attributeListRequestAction());
-        const attributeList = await getAttributeList();
+       const  attributeList = await getAttributeList();
      
        // console.log(attributeList);
         setData(attributeList);
-       // setLoading(false);
+       setLoading(false);
     }
 
     //const classes = useStyles();
 
     return (<div>
 
-        { attributeList.isAttributeListLoading ? <CircularProgress /> :
+        { loading ? <CircularProgress /> :
 
 
             <Paper className={classes.root}>
@@ -93,7 +93,7 @@ function ClinicalDataEntry({ encounterid }) {
 
                         <TableBody>
                             {
-                                attributeList.attributes.map(attribute =>
+                                data.map(attribute =>
                                     <TableRow>
                                         <TableCell>{attribute.Title}</TableCell>
                                         <TableCell>  <TextField label={attribute.Title} id={"txt" + attribute.AttributeCode} InputLabelProps={{ shrink: true }} /></TableCell>
