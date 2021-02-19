@@ -1,4 +1,5 @@
 ﻿import React, { useState, useEffect } from 'react';
+import { useHistory } from "react-router-dom";
 import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Table from '@material-ui/core/Table';
@@ -7,6 +8,7 @@ import TableCell from '@material-ui/core/TableCell';
 import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TablePagination from '@material-ui/core/TablePagination';
+import TextField from '@material-ui/core/TextField';
 import TableRow from '@material-ui/core/TableRow';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import moment from 'moment';
@@ -20,7 +22,14 @@ const useStyles = makeStyles({
     container: {
         maxHeight: 440,
     },
+    hiddenRow: {
+        display:"none",
+    },
+     visibleRow: {
+        display: "block",
+    }
 });
+
 
 
 
@@ -60,58 +69,93 @@ var patient = {
 function PatientContactList() {
 
     const patientListState = useSelector(state => state.patientList);
+    const [currentFilter, setCurrentFilter] = useState("");
+    const [patientTableRows, setPatientTable] = useState("");
+
+
+  
+
     const dispatch = useDispatch();
     useEffect(() => {
         dispatch(patientListRequestAction());
     }, []);
 
+    useEffect(() => {
+      setPatientTable(renderPatientRows());
+    
+    }, [patientListState,currentFilter]);
+
    const classes = useStyles();
+
+   const history = useHistory();
+
+
+    const handleFilter = (event) => {
+        console.log(event);
+        console.log("Filter--" + event.target.value);
+        if (event.nativeEvent.data != "") {
+            setCurrentFilter(event.target.value);
+        } else { setCurrentFilter(""); }
+    };
+
+    const handleRowClick = (patientId) => {
+
+        console.log("Patient Clicked--" + patientId);
+        history.push(`/patient/${patientId}`);
+    };
+
+
+
+    const checkFilter = (patientName) => {
+        return (currentFilter == "" || patientName.toLowerCase().includes(currentFilter.toLowerCase()));
+    };
+
+
+    const renderPatientRows = () => {
+        return (
+            patientListState.patients.filter(patient => checkFilter(patient.FirstName + " " + patient.LastName)).map(patient =>
+                <TableRow hover={true} onClick={() => handleRowClick(patient.Id)}>
+                    <TableCell>{patient.FirstName} {patient.LastName}</TableCell>
+                    <TableCell>{moment(new Date(patient.DateOfBirth)).format('l')}</TableCell>
+                    <TableCell>{patient.Gender}</TableCell>
+                    <TableCell>{patient.Phone}</TableCell>
+                    <TableCell>{patient.OfficePhone}</TableCell>
+                    <TableCell>{patient.Email}</TableCell>
+                </TableRow>
+            )
+            );
+    }
+
 
     return (<div>
 
         { patientListState.isPatientListLoading ? <CircularProgress /> :
 
             <Paper className={classes.root}>
-                <h1>Patient List</h1>
+               <Table>
+                        <TableHead> <TableRow>
+                            <TableCell colSpan={4}><h1>Patient List</h1></TableCell>
+                            <TableCell colSpan={2}><TextField label="Filter" id="patientFilter" onChange={(event) => { handleFilter(event) }} InputLabelProps={{ shrink: true }} /></TableCell>
+                        </TableRow></TableHead>
+                    </Table>
                 <TableContainer className={classes.container}>
-                    <Table stickyHeader aria-label="sticky table">
-                        <TableHead>
-                        <TableRow><TableCell>Name</TableCell>
+                    <Table stickyHeader aria-label="sticky table"> 
+                      <TableHead>                        
+                        <TableRow>
+                            <TableCell>Name</TableCell>
                             <TableCell>Date of Birth</TableCell>
                             <TableCell>Gender</TableCell>
                             <TableCell>Phone</TableCell>
                             <TableCell>Work Phone</TableCell>
-                            <TableCell>Email</TableCell>
-                            <TableCell>AddressLine1</TableCell>
-                            <TableCell>AddressLine2</TableCell>
-                            <TableCell>City</TableCell>
-                            <TableCell>State</TableCell>
-                            <TableCell>Postal Code</TableCell>
-                           
+                            <TableCell>Email</TableCell>               
                         </TableRow>
                         </TableHead>
-
                         <TableBody>
-                            {patientListState.patients.map(patient =>
-                            <TableRow>
-                                <TableCell>{patient.FirstName} {patient.LastName}</TableCell>
-                                <TableCell>{moment(new Date(patient.DateOfBirth)).format('l')}</TableCell> 
-                                <TableCell>{patient.Gender}</TableCell>
-                                <TableCell>{patient.Phone}</TableCell>
-                                <TableCell>{patient.OfficePhone}</TableCell>
-                                <TableCell>{patient.Email}</TableCell>
-                                <TableCell>{patient.AddressLine1}</TableCell>
-                                <TableCell>{patient.AddressLine2}</TableCell>
-                                <TableCell>{patient.AddressCity}</TableCell>
-                                <TableCell>{patient.AddressState}</TableCell>
-                                <TableCell>{patient.AddressPostalCode}</TableCell>
-                               
-                            </TableRow>
-                        )}
+                            {patientTableRows}
                         </TableBody>
                     </Table>
                 </TableContainer>
-            </Paper>
+         </Paper>
         }
 
     </div>);

@@ -1,6 +1,6 @@
 ﻿import { takeEvery, call, put } from "redux-saga/effects";
-import { CREATE_PATIENT_REQUEST, createPatientResponseAction } from '../actions';
-import { savePatient } from '../api';
+import { CREATE_PATIENT_REQUEST, createPatientResponseAction, patientListResponseAction } from '../actions';
+import { savePatient, getPatientList } from '../api';
 
 export function* createPatientRequestWatcher()
 {
@@ -11,4 +11,7 @@ function* createPatientRequestFlow(action) {
    
     const response = yield call(savePatient, action.payload.pendingPatient);
     yield put(createPatientResponseAction(response));
+
+   // const patientList = yield call(getPatientList);
+    //yield put(patientListResponseAction(patientList));
 }

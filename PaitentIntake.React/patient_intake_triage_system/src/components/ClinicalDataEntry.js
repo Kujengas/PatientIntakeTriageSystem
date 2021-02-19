@@ -31,7 +31,7 @@ function ClinicalDataEntry({ encounterid }) {
 
 
    // const attributeList = useSelector(state => state.attributeList);
-    const dispatch = useDispatch();
+   const dispatch = useDispatch();
 
     
 
@@ -41,7 +41,7 @@ function ClinicalDataEntry({ encounterid }) {
     }, []);
 
     const handleSave = () => {       
-        dispatch(saveEncounterClinicalDataRequestAction(buildEncounter()));
+       dispatch(saveEncounterClinicalDataRequestAction(buildEncounter()));
     };
 
     const buildEncounter = () => {

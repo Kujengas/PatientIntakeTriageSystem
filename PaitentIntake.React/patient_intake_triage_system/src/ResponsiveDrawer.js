@@ -31,6 +31,7 @@ import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import ScheduleIcon from '@material-ui/icons/Schedule';
 import NewPatientStepperModal from './components/NewPatientStepperModal';
 import CreateEncounterModal from './components/CreateEncounterModal';
+import PatientChart from './components/PatientChart';
 
 
 
@@ -245,7 +246,9 @@ function ResponsiveDrawer(props) {
                         <Route path="/about" component={About} />
                         <Route path="/facilities" component={FacilitiesList} />
                         <Route path="/dashboard/:id" component={FacilityDashboard} />
+
                         <Route path="/patientcontactlist/" component={PatientContactList} />
+                        <Route path="/patient/:id" component={PatientChart} />
                         <Route path="/providerlist/" component={ProviderList} />
                      
                     </Switch>

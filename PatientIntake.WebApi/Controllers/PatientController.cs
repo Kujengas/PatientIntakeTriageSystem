@@ -20,9 +20,9 @@ namespace PatientIntake.WebApi.Controllers
         }
 
         // GET: api/Patient/5
-        public Patient Get(int id)
+        public PatientChart Get(int id)
         {
-            return PatientData.GetPatient(id);
+            return new PatientChart { Demographics = PatientData.GetPatient(id), Encounters = PatientData.GetEncountersByPatientId(id) };
         }
 
         // POST: api/Patient

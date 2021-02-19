@@ -229,7 +229,6 @@ namespace PatientIntake.DataAccess
             }
         }
 
-
         public static int CheckInPatientByEncounterId(int id)
         {
             var parameters = new List<SqlParameter>();
@@ -248,7 +247,6 @@ namespace PatientIntake.DataAccess
 
             return Database.ExecuteCommand("AssignEncounterToRoom", parameters);
         }
-
 
         public static int CheckOutPatientByEncounterId(int id)
         {

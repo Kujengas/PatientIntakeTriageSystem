@@ -168,6 +168,13 @@ export const assignEncounterToRoom = async (assignment) => {
 
 }
 
+export const getPatientChartById = async (pateintId) => {
+    const url = apiPrefix + 'Patient' + `/${pateintId}`;
+    let chart = await fetch(url).then(apiResponse => apiResponse.json());
+
+    return chart;
+}
+
 export const authenticate = async (userInfo) => {
 
     const url = `${sitePrefix}Token`;
@@ -183,6 +190,7 @@ export const authenticate = async (userInfo) => {
         body: JSON.stringify(data),
         headers: { 'Content-Type': 'application/json' }
     });
+
 
     /*
       user = response.userName;

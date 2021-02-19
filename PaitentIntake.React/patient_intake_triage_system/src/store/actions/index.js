@@ -18,7 +18,8 @@ export const SAVE_ENCOUNTER_CLINICAL_DATA_REQUEST = "SAVE_ENCOUNTER_CLINICAL_DAT
 export const SAVE_ENCOUNTER_CLINICAL_DATA_RESPONSE = "SAVE_ENCOUNTER_CLINICAL_DATA_RESPONSE";
 export const GET_ATTRIBUTE_LIST_REQUEST =  "GET_ATTRIBUTE_LIST_REQUEST";
 export const GET_ATTRIBUTE_LIST_RESPONSE = "GET_ATTRIBUTE_LIST_RESPONSE";
-
+export const PATIENT_CHART_REQUEST = "PATIENT_CHART_REQUEST";
+export const PATIENT_CHART_RESPONSE = "PATIENT_CHART_RESPONSE";
 
 //ACTIONS
 
@@ -177,5 +178,20 @@ export const attributeListResponseAction = (attributeList) => ({
     payload: {
         isAttributeListLoading: false,
         attributes: attributeList
+    }
+});
+
+export const patientChartRequestAction = (patientId) => ({
+    type: PATIENT_CHART_REQUEST, payload: {
+        isPatientChartLoading: true,
+        patientId: patientId
+    }
+});
+
+export const patientChartResponseAction = (patientChart) => ({
+    type: PATIENT_CHART_RESPONSE,
+    payload: {
+        isPatientChartLoading: false,
+       chart: patientChart
     }
 });

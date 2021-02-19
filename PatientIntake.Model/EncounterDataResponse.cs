@@ -4,7 +4,7 @@ using System.Text;
 
 namespace PatientIntake.Model
 {
-    public class OpenEncountersResponse
+    public class EncounterDataResponse
     {
         public int? Encounter_Id { get; set; } 
         public int? Encounter_PatientId { get; set; }
@@ -71,7 +71,6 @@ namespace PatientIntake.Model
         public int? Rooms_LocationId { get; set; }
         public string Rooms_RoomDescription { get; set; }
         public string Rooms_Notes { get; set; }
-
-
+        public List<EncounterAttribute> Encounter_Attributes { get; set; } = new List<EncounterAttribute>();
     }
 }

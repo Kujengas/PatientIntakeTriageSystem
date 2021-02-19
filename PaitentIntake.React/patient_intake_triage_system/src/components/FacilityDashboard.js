@@ -39,7 +39,6 @@ const useRowStyles = makeStyles({
     },
 });
 
-
 function FacilityDashboard({ match }) {
     const classes = useStyles();
 
@@ -48,7 +47,7 @@ function FacilityDashboard({ match }) {
     const [data, setData] = useState({});
     const [open, setOpen] = useState(false);
     const dispatch = useDispatch();
-    const locationDashboardState = useSelector(state => state.locationDashboard);
+    let locationDashboardState = useSelector(state => state.locationDashboard);
 
 
     const fetchFacilityDashboard = () => {
@@ -217,9 +216,6 @@ function FacilityDashboard({ match }) {
             </React.Fragment>
         );
     }
-
-
-
 
     return (<div >
         {locationDashboardState.isLocationDashboardLoading ? <CircularProgress /> :

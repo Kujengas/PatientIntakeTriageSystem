@@ -9,6 +9,7 @@ import { createPatientRequestWatcher } from './createPatientSaga';
 import { getEncounterClinicalDataRequestWatcher } from './getEncounterClinicalDataSaga';
 import { saveEncounterClinicalDataRequestWatcher } from './saveEncounterClinicalDataSaga';
 import { attributeListRequestWatcher } from './attributeListSaga';
+import { patientChartRequestWatcher } from './patientChartSaga';
 
 export function* rootSaga() {
     yield fork(providerListRequestWatcher)
@@ -21,5 +22,5 @@ export function* rootSaga() {
     yield fork(getEncounterClinicalDataRequestWatcher)
     yield fork(saveEncounterClinicalDataRequestWatcher)
     yield fork(attributeListRequestWatcher)
-
+    yield fork(patientChartRequestWatcher)
 }

@@ -127,18 +127,15 @@ namespace PatientIntake.DataAccess
                     }).ToList();
         }
 
-
-
-
-       // flattemed datatable for encounters grid
-        public static List<OpenEncountersResponse> GetOpenEncountersByLocationId(int id)
+       // flattened datatable for encounters grid
+        public static List<EncounterDataResponse> GetOpenEncountersByLocationId(int id)
         {
             var parameters = new List<SqlParameter>();
             parameters.Add(new SqlParameter("@LocationId", id));
             DataTable dt = Database.GetDataTable("GetOpenEncountersByLocationId", parameters);
 
             return (from DataRow row in dt.Rows
-                    select new OpenEncountersResponse
+                    select new EncounterDataResponse
                     {
                         Encounter_Id = ((row["Encounter_Id"] != DBNull.Value) ? Convert.ToInt32(row["Encounter_Id"]) : (Int32?)null),
                         Encounter_PatientId = ((row["Encounter_PatientId"] != DBNull.Value) ? Convert.ToInt32(row["Encounter_PatientId"]) : (Int32?)null),
@@ -209,6 +206,7 @@ namespace PatientIntake.DataAccess
                         Rooms_LocationId = ((row["Rooms_LocationId"] != DBNull.Value) ? Convert.ToInt32(row["Rooms_LocationId"]) : (Int32?)null),
                         Rooms_RoomDescription = row["Rooms_RoomDescription"].ToString(),
                         Rooms_Notes = row["Rooms_Notes"].ToString(),
+                        Encounter_Attributes = EncounterData.GetAttributeValuesByEncounter(Convert.ToInt32(row["Encounter_Id"]))
 
                         //CreatedDate = Convert.ToDateTime(row["CreationDate"]),
 

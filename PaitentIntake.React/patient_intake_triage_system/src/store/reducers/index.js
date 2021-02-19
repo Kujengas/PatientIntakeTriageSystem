@@ -8,6 +8,7 @@ import createPatientReducer from './createPatientReducer';
 import getEncounterClinicalDataReducer from './getEncounterClinicalDataReducer';
 import saveEncounterClinicalDataReducer from './saveEncounterClinicalDataReducer';
 import attributeListReducer from './attributeListReducer';
+import patientChartReducer from './patientChartReducer';
 
 const apiReducer = combineReducers({
     providerList: providerListReducer,
@@ -18,7 +19,8 @@ const apiReducer = combineReducers({
     createdPatient: createPatientReducer,
     loadedEncounterClinicalData: getEncounterClinicalDataReducer,
     savedEncounterClinicalData: saveEncounterClinicalDataReducer,
-    attributeList: attributeListReducer
+    attributeList: attributeListReducer,
+    patientChart: patientChartReducer
 });
 
 export default apiReducer;

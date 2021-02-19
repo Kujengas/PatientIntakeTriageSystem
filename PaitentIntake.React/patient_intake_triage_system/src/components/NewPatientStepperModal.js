@@ -122,7 +122,7 @@ export default function NewPatientStepperModal() {
        // console.log(response);
 
         dispatch(createPatientRequestAction(patient));
-        dispatch(patientListRequestAction());
+       // dispatch(patientListRequestAction());
         handleClose();
        
     }
